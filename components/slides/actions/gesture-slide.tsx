@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState, useRef, useEffect } from "react"
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon, Maximize2, Minimize2, RotateCw } from "lucide-react"
 import { PrismCode } from "@/components/ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function GestureSlide() {
   return (
@@ -17,56 +18,54 @@ export default function GestureSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-        <div className="prose max-w-none mb-6">
-          <h2 className="text-xl font-semibold mb-3">정의</h2>
-          <p>
-            제스처(Gesture)는 터치스크린이나 트랙패드에서 손가락 움직임을 통해 인터페이스와 상호작용하는 방식입니다.
-            일반적으로 탭, 스와이프, 핀치, 스프레드, 더블탭, 롱 프레스 등이 포함됩니다.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <GestureDemo 
-            title="탭 (Tap)"
-            description="화면을 빠르게 터치했다 떼는 동작"
-            instruction="박스를 탭해보세요"
-            gesture="tap"
-          />
-          <GestureDemo 
-            title="더블 탭 (Double Tap)"
-            description="같은 위치를 연속해서 두 번 탭하는 동작"
-            instruction="박스를 더블 탭해보세요"
-            gesture="doubletap"
-          />
-          <GestureDemo 
-            title="롱 프레스 (Long Press)"
-            description="화면을 길게 누르고 있는 동작"
-            instruction="박스를 길게 누르세요"
-            gesture="longpress"
-          />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <GestureDemo 
-            title="스와이프 (Swipe)"
-            description="화면을 특정 방향으로 밀어내는 동작"
-            instruction="박스를 옆으로 스와이프하세요"
-            gesture="swipe"
-          />
-          <GestureDemo 
-            title="핀치 & 스프레드 (Pinch/Spread)"
-            description="두 손가락을 모으거나 벌리는 동작"
-            instruction="두 손가락으로 확대/축소해보세요"
-            gesture="pinch"
-          />
-        </div>
-        
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <h3 className="text-lg font-medium mb-2">Flutter에서의 제스처 구현</h3>
-          <PrismCode
-            language="dart"
-            code={`// 기본 탭 제스처
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">정의</h3>
+              <p>
+                제스처(Gesture)는 터치스크린이나 트랙패드에서 손가락 움직임을 통해 인터페이스와 상호작용하는 방식입니다.
+                일반적으로 탭, 스와이프, 핀치, 스프레드, 더블탭, 롱 프레스 등이 포함됩니다.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">일반적인 제스처 유형</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>탭(Tap):</strong> 클릭과 동일, 요소 선택</li>
+                <li><strong>더블 탭(Double Tap):</strong> 확대/축소, 특별 기능 활성화</li>
+                <li><strong>롱 프레스(Long Press):</strong> 컨텍스트 메뉴, 추가 옵션 표시</li>
+                <li><strong>스와이프(Swipe):</strong> 페이지 전환, 목록 스크롤</li>
+                <li><strong>핀치(Pinch)/스프레드(Spread):</strong> 확대/축소</li>
+                <li><strong>회전(Rotate):</strong> 이미지나 요소 회전</li>
+                <li><strong>멀티 터치:</strong> 여러 손가락을 사용한 복합 동작</li>
+              </ul>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">구현 고려사항</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>다양한 기기에서 일관된 인식률 보장</li>
+                <li>접근성 고려 (대체 상호작용 방식 제공)</li>
+                <li>시각적 피드백으로 제스처 인식 표시</li>
+                <li>제스처 간의 충돌 방지 (예: 스와이프와 스크롤)</li>
+                <li>성능 최적화 (이벤트 스로틀링, 디바운싱)</li>
+                <li>사용자 교육 및 온보딩 고려</li>
+              </ul>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                language="dart"
+                code={`// 기본 탭 제스처
 GestureDetector(
   onTap: () {
     print('탭 감지됨!');
@@ -222,37 +221,51 @@ class _RotationExampleState extends State<RotationExample> {
       ),
     );
   }
-}
-`}
-          />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">일반적인 제스처 유형</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><strong>탭(Tap):</strong> 클릭과 동일, 요소 선택</li>
-              <li><strong>더블 탭(Double Tap):</strong> 확대/축소, 특별 기능 활성화</li>
-              <li><strong>롱 프레스(Long Press):</strong> 컨텍스트 메뉴, 추가 옵션 표시</li>
-              <li><strong>스와이프(Swipe):</strong> 페이지 전환, 목록 스크롤</li>
-              <li><strong>핀치(Pinch)/스프레드(Spread):</strong> 확대/축소</li>
-              <li><strong>회전(Rotate):</strong> 이미지나 요소 회전</li>
-              <li><strong>멀티 터치:</strong> 여러 손가락을 사용한 복합 동작</li>
-            </ul>
-          </div>
-          
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">구현 고려사항</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>다양한 기기에서 일관된 인식률 보장</li>
-              <li>접근성 고려 (대체 상호작용 방식 제공)</li>
-              <li>시각적 피드백으로 제스처 인식 표시</li>
-              <li>제스처 간의 충돌 방지 (예: 스와이프와 스크롤)</li>
-              <li>성능 최적화 (이벤트 스로틀링, 디바운싱)</li>
-              <li>사용자 교육 및 온보딩 고려</li>
-            </ul>
-          </div>
-        </div>
+}`}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <GestureDemo 
+                  title="탭 (Tap)"
+                  description="화면을 빠르게 터치했다 떼는 동작"
+                  instruction="박스를 탭해보세요"
+                  gesture="tap"
+                />
+                <GestureDemo 
+                  title="더블 탭 (Double Tap)"
+                  description="같은 위치를 연속해서 두 번 탭하는 동작"
+                  instruction="박스를 더블 탭해보세요"
+                  gesture="doubletap"
+                />
+                <GestureDemo 
+                  title="롱 프레스 (Long Press)"
+                  description="화면을 길게 누르고 있는 동작"
+                  instruction="박스를 길게 누르세요"
+                  gesture="longpress"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <GestureDemo 
+                  title="스와이프 (Swipe)"
+                  description="화면을 특정 방향으로 밀어내는 동작"
+                  instruction="박스를 옆으로 스와이프하세요"
+                  gesture="swipe"
+                />
+                <GestureDemo 
+                  title="핀치 & 스프레드 (Pinch/Spread)"
+                  description="두 손가락을 모으거나 벌리는 동작"
+                  instruction="두 손가락으로 확대/축소해보세요"
+                  gesture="pinch"
+                />
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

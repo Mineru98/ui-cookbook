@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { ChevronUp, ChevronDown, Filter, X, Share, Trash, Edit, Copy, Download, Heart } from "lucide-react"
 import { PrismCode } from "@/components/ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function BottomSheetSlide() {
   const [isOpen, setIsOpen] = useState(false)
@@ -263,179 +264,92 @@ export default function BottomSheetSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-        <div className="prose max-w-none mb-6">
-          <h2 className="text-xl font-semibold mb-3">정의</h2>
-          <p>
-            바텀 시트는 화면 하단에서 올라오는 패널로, 주 화면을 유지하면서 추가적인 콘텐츠나 작업을 
-            표시합니다. 대화상자(Modal)의 대안으로, 문맥을 유지하면서 상호작용할 수 있는 UI 패턴입니다.
-          </p>
-        </div>
-        
-        <div className="flex justify-center mb-4">
-          <div className="flex flex-wrap gap-2 justify-center">
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${sheetType === "basic" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSheetType("basic")}
-            >
-              기본형
-            </button>
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${sheetType === "modal" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSheetType("modal")}
-            >
-              모달형
-            </button>
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${sheetType === "scrollable" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSheetType("scrollable")}
-            >
-              스크롤형
-            </button>
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${sheetType === "actions" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSheetType("actions")}
-            >
-              액션 시트
-            </button>
-          </div>
-        </div>
-        
-        <div className="border rounded-lg bg-gray-100 overflow-hidden relative h-[400px]">
-          {/* 메인 콘텐츠 */}
-          <div className="p-4 h-full">
-            <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
-              <h3 className="text-lg font-medium mb-2">메인 콘텐츠 영역</h3>
-              <p className="text-gray-600 mb-4">
-                {sheetType === "modal" 
-                  ? "필터 옵션을 확인하려면 바텀 시트를 열어보세요." 
-                  : sheetType === "scrollable" 
-                    ? "댓글을 확인하려면 바텀 시트를 열어보세요."
-                    : sheetType === "actions"
-                      ? "문서 작업 메뉴를 보려면 바텀 시트를 열어보세요."
-                      : "다양한 형태의 바텀 시트를 경험해보세요."}
-              </p>
-              <button
-                onClick={toggleSheet}
-                className="flex items-center gap-2 px-4 py-2 bg-[#268052] text-white rounded-lg hover:bg-[#268052]/90"
-              >
-                {isOpen ? (
-                  <>
-                    <ChevronDown className="w-4 h-4" />
-                    시트 닫기
-                  </>
-                ) : (
-                  <>
-                    <ChevronUp className="w-4 h-4" />
-                    {sheetType === "modal" 
-                      ? <><Filter className="w-4 h-4 mr-1" /> 필터 열기</> 
-                      : sheetType === "scrollable" 
-                        ? "댓글 보기"
-                        : sheetType === "actions"
-                          ? "액션 메뉴 열기"
-                          : "바텀 시트 열기"}
-                  </>
-                )}
-              </button>
-            </div>
-            
-            <div className="text-center text-sm text-gray-500">
-              <p>현재 시트 유형: <strong>{sheetType}</strong></p>
-              <p>시트 높이: <strong>{sheetHeight}</strong></p>
-            </div>
-          </div>
-          
-          {/* 바텀 시트 */}
-          <div 
-            className={`absolute left-0 right-0 bottom-0 bg-white rounded-t-xl shadow-lg transition-transform duration-300 ease-out ${
-              isOpen ? 'translate-y-0' : 'translate-y-full'
-            } ${getHeightClass()}`}
-          >
-            {/* 핸들 바 */}
-            <div className="flex justify-center py-2">
-              <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
-            </div>
-            
-            {renderSheetContent()}
-          </div>
-          
-          {/* 오버레이 - 모달형일 때만 표시 */}
-          {isOpen && sheetType === "modal" && (
-            <div 
-              className="absolute inset-0 bg-black/20"
-              onClick={closeSheet}
-            ></div>
-          )}
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">바텀 시트 유형</h3>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>
-                <strong>기본형 (Standard)</strong>
-                <p className="text-sm text-gray-600">일반적인 바텀 시트로, 추가 정보나 설정을 표시</p>
-              </li>
-              <li>
-                <strong>모달형 (Modal)</strong>
-                <p className="text-sm text-gray-600">배경이 어두워지며 주 콘텐츠와의 인터랙션 차단</p>
-              </li>
-              <li>
-                <strong>확장형 (Expandable)</strong>
-                <p className="text-sm text-gray-600">여러 단계의 높이로 확장 가능한 형태</p>
-              </li>
-              <li>
-                <strong>스크롤형 (Scrollable)</strong>
-                <p className="text-sm text-gray-600">길이가 긴 콘텐츠를 표시하기 위해 내부 스크롤 제공</p>
-              </li>
-              <li>
-                <strong>액션 시트 (Action Sheet)</strong>
-                <p className="text-sm text-gray-600">여러 작업 옵션을 리스트로 제공</p>
-              </li>
-            </ul>
-          </div>
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
 
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">사용 사례</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>필터링 및 정렬 옵션</li>
-              <li>댓글 및 리뷰 목록</li>
-              <li>지도 상세 정보</li>
-              <li>공유 메뉴</li>
-              <li>설정 패널</li>
-              <li>미디어 컨트롤</li>
-              <li>폼 입력</li>
-              <li>장바구니 요약</li>
-            </ul>
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="prose max-w-none mb-6">
+              <h2 className="text-xl font-semibold mb-3">정의</h2>
+              <p>
+                바텀 시트는 화면 하단에서 올라오는 패널로, 주 화면을 유지하면서 추가적인 콘텐츠나 작업을 
+                표시합니다. 대화상자(Modal)의 대안으로, 문맥을 유지하면서 상호작용할 수 있는 UI 패턴입니다.
+              </p>
+            </div>
             
-            <h3 className="text-lg font-medium mt-4 mb-2">사용자 경험 고려사항</h3>
-            <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
-              <li>부드럽고 자연스러운 애니메이션</li>
-              <li>여러 방법으로 닫을 수 있는 옵션 (핸들 드래그, 외부 클릭, X 버튼)</li>
-              <li>적절한 높이로 중요 콘텐츠 표시</li>
-              <li>상황에 맞는 키보드 처리</li>
-              <li>제스처 지원 (스와이프로 닫기)</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md">
-          <h3 className="text-lg font-medium mb-2 text-[#268052]">구현 팁</h3>
-          <ul className="list-disc pl-6 space-y-1 text-gray-700">
-            <li>터치 제스처 인식으로 스와이프하여 열고 닫기 구현</li>
-            <li>변환(transform) 속성으로 성능 최적화된 애니메이션</li>
-            <li>상단 둥근 모서리와 핸들 바로 시각적 인지성 향상</li>
-            <li>모바일 키보드 표시 시 적절한 위치 조정</li>
-            <li>다단계 높이(기본, 중간, 최대)로 사용자 경험 개선</li>
-            <li>오버스크롤 동작 처리 (시트 콘텐츠 끝에 도달했을 때)</li>
-          </ul>
-        </div>
-        
-        <div className="mt-6 p-4 border border-gray-200 rounded-md bg-gray-50">
-          <h3 className="text-lg font-medium mb-3">Flutter/Dart 구현 예시</h3>
-          <PrismCode
-            language="dart"
-            code={`import 'package:flutter/material.dart';
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 bg-slate-50 rounded-md">
+                <h3 className="text-lg font-medium mb-2">바텀 시트 유형</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li>
+                    <strong>기본형 (Standard)</strong>
+                    <p className="text-sm text-gray-600">일반적인 바텀 시트로, 추가 정보나 설정을 표시</p>
+                  </li>
+                  <li>
+                    <strong>모달형 (Modal)</strong>
+                    <p className="text-sm text-gray-600">배경이 어두워지며 주 콘텐츠와의 인터랙션 차단</p>
+                  </li>
+                  <li>
+                    <strong>확장형 (Expandable)</strong>
+                    <p className="text-sm text-gray-600">여러 단계의 높이로 확장 가능한 형태</p>
+                  </li>
+                  <li>
+                    <strong>스크롤형 (Scrollable)</strong>
+                    <p className="text-sm text-gray-600">길이가 긴 콘텐츠를 표시하기 위해 내부 스크롤 제공</p>
+                  </li>
+                  <li>
+                    <strong>액션 시트 (Action Sheet)</strong>
+                    <p className="text-sm text-gray-600">여러 작업 옵션을 리스트로 제공</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="p-4 bg-slate-50 rounded-md">
+                <h3 className="text-lg font-medium mb-2">사용 사례</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>필터링 및 정렬 옵션</li>
+                  <li>댓글 및 리뷰 목록</li>
+                  <li>지도 상세 정보</li>
+                  <li>공유 메뉴</li>
+                  <li>설정 패널</li>
+                  <li>미디어 컨트롤</li>
+                  <li>폼 입력</li>
+                  <li>장바구니 요약</li>
+                </ul>
+                
+                <h3 className="text-lg font-medium mt-4 mb-2">사용자 경험 고려사항</h3>
+                <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
+                  <li>부드럽고 자연스러운 애니메이션</li>
+                  <li>여러 방법으로 닫을 수 있는 옵션 (핸들 드래그, 외부 클릭, X 버튼)</li>
+                  <li>적절한 높이로 중요 콘텐츠 표시</li>
+                  <li>상황에 맞는 키보드 처리</li>
+                  <li>제스처 지원 (스와이프로 닫기)</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md">
+              <h3 className="text-lg font-medium mb-2 text-[#268052]">구현 팁</h3>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>터치 제스처 인식으로 스와이프하여 열고 닫기 구현</li>
+                <li>변환(transform) 속성으로 성능 최적화된 애니메이션</li>
+                <li>상단 둥근 모서리와 핸들 바로 시각적 인지성 향상</li>
+                <li>모바일 키보드 표시 시 적절한 위치 조정</li>
+                <li>다단계 높이(기본, 중간, 최대)로 사용자 경험 개선</li>
+                <li>오버스크롤 동작 처리 (시트 콘텐츠 끝에 도달했을 때)</li>
+              </ul>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                language="dart"
+                code={`import 'package:flutter/material.dart';
 
 class BottomSheetExample extends StatefulWidget {
   @override
@@ -792,8 +706,134 @@ class _BottomSheetExampleState extends State<BottomSheetExample> {
 
 enum SheetHeight { small, medium, large, full }
 enum SheetType { basic, modal, scrollable, actions }`}
-          />
-        </div>
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="flex justify-center mb-4">
+              <div className="flex flex-wrap gap-2 justify-center">
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${sheetType === "basic" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSheetType("basic")}
+                >
+                  기본형
+                </button>
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${sheetType === "modal" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSheetType("modal")}
+                >
+                  모달형
+                </button>
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${sheetType === "scrollable" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSheetType("scrollable")}
+                >
+                  스크롤형
+                </button>
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${sheetType === "actions" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSheetType("actions")}
+                >
+                  액션 시트
+                </button>
+              </div>
+            </div>
+            
+            <div className="border rounded-lg bg-gray-100 overflow-hidden relative h-[400px]">
+              {/* 메인 콘텐츠 */}
+              <div className="p-4 h-full">
+                <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
+                  <h3 className="text-lg font-medium mb-2">메인 콘텐츠 영역</h3>
+                  <p className="text-gray-600 mb-4">
+                    {sheetType === "modal" 
+                      ? "필터 옵션을 확인하려면 바텀 시트를 열어보세요." 
+                      : sheetType === "scrollable" 
+                        ? "댓글을 확인하려면 바텀 시트를 열어보세요."
+                        : sheetType === "actions"
+                          ? "문서 작업 메뉴를 보려면 바텀 시트를 열어보세요."
+                          : "다양한 형태의 바텀 시트를 경험해보세요."}
+                  </p>
+                  <button
+                    onClick={toggleSheet}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#268052] text-white rounded-lg hover:bg-[#268052]/90"
+                  >
+                    {isOpen ? (
+                      <>
+                        <ChevronDown className="w-4 h-4" />
+                        시트 닫기
+                      </>
+                    ) : (
+                      <>
+                        <ChevronUp className="w-4 h-4" />
+                        {sheetType === "modal" 
+                          ? <><Filter className="w-4 h-4 mr-1" /> 필터 열기</> 
+                          : sheetType === "scrollable" 
+                            ? "댓글 보기"
+                            : sheetType === "actions"
+                              ? "액션 메뉴 열기"
+                              : "바텀 시트 열기"}
+                      </>
+                    )}
+                  </button>
+                </div>
+                
+                <div className="text-center text-sm text-gray-500">
+                  <p>현재 시트 유형: <strong>{sheetType}</strong></p>
+                  <p>시트 높이: <strong>{sheetHeight}</strong></p>
+                  <div className="flex justify-center gap-3 mt-4">
+                    <button
+                      className={`px-3 py-1.5 rounded text-xs ${sheetHeight === "small" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                      onClick={() => setSheetHeight("small")}
+                    >
+                      작은 높이
+                    </button>
+                    <button
+                      className={`px-3 py-1.5 rounded text-xs ${sheetHeight === "medium" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                      onClick={() => setSheetHeight("medium")}
+                    >
+                      중간 높이
+                    </button>
+                    <button
+                      className={`px-3 py-1.5 rounded text-xs ${sheetHeight === "large" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                      onClick={() => setSheetHeight("large")}
+                    >
+                      큰 높이
+                    </button>
+                    <button
+                      className={`px-3 py-1.5 rounded text-xs ${sheetHeight === "full" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                      onClick={() => setSheetHeight("full")}
+                    >
+                      전체 화면
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* 바텀 시트 */}
+              <div 
+                className={`absolute left-0 right-0 bottom-0 bg-white rounded-t-xl shadow-lg transition-transform duration-300 ease-out ${
+                  isOpen ? 'translate-y-0' : 'translate-y-full'
+                } ${getHeightClass()}`}
+              >
+                {/* 핸들 바 */}
+                <div className="flex justify-center py-2">
+                  <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
+                </div>
+                
+                {renderSheetContent()}
+              </div>
+              
+              {/* 오버레이 - 모달형일 때만 표시 */}
+              {isOpen && sheetType === "modal" && (
+                <div 
+                  className="absolute inset-0 bg-black/20"
+                  onClick={closeSheet}
+                ></div>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

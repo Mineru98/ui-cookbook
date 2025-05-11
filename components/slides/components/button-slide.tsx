@@ -54,9 +54,6 @@ export default function ButtonSlide() {
 
           <TabsContent value="code" className="mt-4">
             <div className="bg-gray-800 p-4 rounded-lg text-white">
-              <div className="flex text-xs mb-2 text-gray-400">
-                <span className="px-2 py-1 rounded bg-gray-700">Dart</span>
-              </div>
               <PrismCode
                 language="dart"
                 code={`import 'package:flutter/material.dart';

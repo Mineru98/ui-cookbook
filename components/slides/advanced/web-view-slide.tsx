@@ -1,10 +1,10 @@
-// components/slides/advanced/web-view-slide.tsx
 "use client"
 
 import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { ArrowLeft, ArrowRight, RefreshCw, Home, X, Share, MoreVertical, Globe } from "lucide-react"
 import { PrismCode } from "../../ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function WebViewSlide() {
   const [webViewType, setWebViewType] = useState<"basic" | "custom-ui" | "embedded" | "full-page">("basic")
@@ -162,7 +162,15 @@ export default function WebViewSlide() {
         }
       `}</style>
 
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
         <div className="prose max-w-none mb-6">
           <h2 className="text-xl font-semibold mb-3">정의</h2>
           <p>
@@ -266,8 +274,7 @@ export default function WebViewSlide() {
         </div>
 
         {/* Flutter 구현 코드 */}
-        <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md mt-6">
-          <h3 className="text-lg font-medium mb-2 text-[#268052]">Flutter 구현 코드</h3>
+        <div className="bg-gray-800 p-4 border rounded-md mb-6">
           <PrismCode
             language="dart"
             code={`// ${webViewType === "basic" ? "BasicWebView" : webViewType === "custom-ui" ? "CustomUIWebView" : webViewType === "embedded" ? "EmbeddedWebView" : "FullPageWebView"} 구현 예시
@@ -326,6 +333,8 @@ class _${webViewType === "basic" ? "BasicWebView" : webViewType === "custom-ui" 
 }`}
           />
         </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

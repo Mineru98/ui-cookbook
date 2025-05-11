@@ -69,7 +69,7 @@ export default function CheckBoxSlide() {
           </TabsContent>
 
           <TabsContent value="code" className="mt-4">
-            <div className="bg-gray-100 p-4 rounded-lg">
+            <div className="bg-gray-800 p-4 rounded-lg">
               <PrismCode
                 language="dart"
                 code={`// 기본 체크박스

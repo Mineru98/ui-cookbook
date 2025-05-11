@@ -3,8 +3,8 @@
 import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { ArrowRight } from "lucide-react"
-import Image from "next/image"
 import { PrismCode } from "../../ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function HeroSlide() {
   const [heroType, setHeroType] = useState<"basic" | "centered" | "split" | "video">("basic")
@@ -121,7 +121,15 @@ export default function HeroSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
         <div className="prose max-w-none mb-6">
           <h2 className="text-xl font-semibold mb-3">정의</h2>
           <p>
@@ -295,8 +303,7 @@ export default function HeroSlide() {
         </div>
 
         {/* 히어로 섹션 추가 내용 */}
-        <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md mt-6">
-          <h3 className="text-lg font-medium mb-2 text-[#268052]">Flutter 구현 코드</h3>
+        <div className="bg-gray-800 p-4 border rounded-md mb-6">
           <PrismCode
             language="dart"
             code={`// ${heroType === "basic" 
@@ -621,6 +628,144 @@ class ${heroType === "basic"
 }`}
           />
         </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">히어로 유형 선택</label>
+                <select
+                  value={heroType}
+                  onChange={(e) => setHeroType(e.target.value as any)}
+                  className="w-full p-2 border rounded-md mb-4"
+                >
+                  <option value="basic">기본형 (Basic Hero)</option>
+                  <option value="centered">중앙 정렬형 (Centered Hero)</option>
+                  <option value="split">분할형 (Split Hero)</option>
+                  <option value="video">비디오형 (Video Hero)</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col items-center gap-4">
+                {/* 히어로 데모 영역 */}
+                <div className="w-full border rounded-lg overflow-hidden">
+                  {heroType === "basic" && (
+                    <div className="h-64 bg-gray-200 flex items-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#268052]/90 to-transparent z-10"></div>
+                      <div className="absolute inset-0">
+                        <div className="w-full h-full bg-gray-300 flex items-center justify-center">
+                          <span className="text-4xl text-gray-500">🏞️</span>
+                        </div>
+                      </div>
+                      <div className="relative z-20 text-white p-6 max-w-lg">
+                        <h2 className="text-xl font-bold mb-2">기본 히어로 섹션</h2>
+                        <p className="text-white/80 mb-4 text-sm">
+                          웹사이트의 첫인상을 결정하는 히어로 섹션은 방문자의 주의를 끌고 핵심 메시지를 효과적으로 전달합니다.
+                        </p>
+                        <button className="bg-white text-[#268052] px-4 py-2 rounded-md font-medium text-sm">
+                          자세히 보기
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {heroType === "centered" && (
+                    <div className="h-64 bg-gradient-to-r from-[#268052] to-[#134429] flex items-center justify-center">
+                      <div className="text-center text-white p-6 max-w-lg mx-auto">
+                        <h2 className="text-xl font-bold mb-2">중앙 정렬 히어로 섹션</h2>
+                        <p className="text-white/80 mb-4 text-sm">
+                          중요한 내용이나 주목을 끌어야 하는 정보를 중앙에 배치해 강조하는 히어로 섹션입니다. 
+                          브랜드 메시지나 주요 마케팅 카피에 적합합니다.
+                        </p>
+                        <button className="bg-white text-[#268052] px-4 py-2 rounded-md font-medium text-sm">
+                          자세히 알아보기
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {heroType === "split" && (
+                    <div className="h-64 bg-white flex flex-col md:flex-row">
+                      <div className="flex-1 bg-[#268052] flex items-center justify-center p-6">
+                        <div className="text-white max-w-xs">
+                          <h2 className="text-xl font-bold mb-2">분할 히어로 섹션</h2>
+                          <p className="text-white/80 mb-4 text-sm">
+                            텍스트와 이미지를 나란히 배치하여 내용과 시각적 요소의 균형을 맞춘 히어로 섹션입니다.
+                          </p>
+                          <button className="text-white border border-white px-4 py-2 rounded-md font-medium text-sm flex items-center">
+                            더 보기
+                            <ArrowRight className="h-4 w-4 ml-1" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex-1 bg-gray-200 flex items-center justify-center">
+                        <div className="p-6 text-center">
+                          <div className="w-24 h-24 bg-gray-300 rounded-full mb-3 mx-auto flex items-center justify-center">
+                            <span className="text-3xl text-gray-500">🖼️</span>
+                          </div>
+                          <p className="text-gray-500 text-sm">이미지 또는 비디오 영역</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {heroType === "video" && (
+                    <div className="h-64 bg-gray-800 flex items-center justify-center overflow-hidden relative">
+                      <div className="absolute inset-0 bg-black/50 z-10"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                          <span className="text-4xl text-gray-500">📹</span>
+                        </div>
+                      </div>
+                      <div className="relative z-20 text-white text-center max-w-lg mx-auto p-6">
+                        <h2 className="text-xl font-bold mb-2">비디오 배경 히어로</h2>
+                        <p className="text-white/80 mb-4 text-sm">
+                          움직이는 영상을 배경으로 활용하여 사용자의 주목을 끌고 역동적인 느낌을 전달합니다.
+                        </p>
+                        <button className="bg-[#268052] text-white px-4 py-2 rounded-md font-medium text-sm">
+                          시작하기
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="w-full text-sm mt-4 p-4 bg-gray-50 rounded-md">
+                  <h3 className="font-medium mb-2">특징:</h3>
+                  {heroType === "basic" && (
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>배경 이미지와 왼쪽 정렬된 텍스트 구성</li>
+                      <li>그라디언트 오버레이로 텍스트 가독성 확보</li>
+                      <li>일반적인 웹사이트에서 널리 사용되는 형태</li>
+                    </ul>
+                  )}
+                  {heroType === "centered" && (
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>그라디언트 배경에 중앙 정렬된 콘텐츠</li>
+                      <li>시선을 중앙으로 집중시키는 효과</li>
+                      <li>브랜드 메시지나 주요 정보 강조에 효과적</li>
+                    </ul>
+                  )}
+                  {heroType === "split" && (
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>텍스트와 이미지 영역을 균등하게 분할</li>
+                      <li>텍스트와 시각 요소 간의 균형 유지</li>
+                      <li>다양한 정보를 구조적으로 표현 가능</li>
+                    </ul>
+                  )}
+                  {heroType === "video" && (
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>배경에 동영상을 사용한 역동적인 표현</li>
+                      <li>어두운 오버레이로 텍스트 가독성 확보</li>
+                      <li>몰입감 있는 첫인상 제공에 효과적</li>
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState, useRef } from "react"
 import { GridIcon, GripVertical } from "lucide-react"
 import { PrismCode } from "@/components/ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface Task {
   id: string
@@ -129,51 +130,51 @@ export default function DragSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-        <div className="space-y-6">
-          <div className="prose max-w-none">
-            <h2 className="text-xl font-semibold mb-2">정의</h2>
-            <p>
-              드래그(Drag)는 요소를 클릭하고 마우스 버튼을 누른 상태에서 위치를 변경하는 사용자 인터렉션 방식입니다. 
-              주로 항목 재정렬, 위치 변경, 요소의 이동 등에 사용됩니다.
-            </p>
-          </div>
-          
-          <DraggableBox />
-          
-          <div className="border rounded-lg overflow-hidden shadow-sm">
-            <div className="bg-slate-50 p-3 border-b">
-              <h3 className="font-medium">드래그 앤 드롭 목록</h3>
-              <p className="text-sm text-gray-600">항목을 드래그하여 순서를 변경해보세요</p>
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">정의</h3>
+              <p>
+                드래그(Drag)는 요소를 클릭하고 마우스 버튼을 누른 상태에서 위치를 변경하는 사용자 인터렉션 방식입니다. 
+                주로 항목 재정렬, 위치 변경, 요소의 이동 등에 사용됩니다.
+              </p>
             </div>
-            
-            <div className="p-3 bg-white">
-              {tasks.map((task, index) => (
-                <div
-                  key={task.id}
-                  draggable
-                  onDragStart={() => handleDragStart(index)}
-                  onDragOver={(e) => handleDragOver(e, index)}
-                  onDragEnd={handleDragEnd}
-                  className={`border rounded-md p-3 mb-2 bg-white flex items-center ${draggedItem === index ? 'opacity-50' : ''}`}
-                >
-                  <div className="cursor-grab mr-3 text-gray-400 hover:text-gray-600">
-                    <GripVertical size={18} />
-                  </div>
-                  <div>
-                    <div className="font-medium">{task.content}</div>
-                    <div className="text-xs text-gray-500">{task.category}</div>
-                  </div>
-                </div>
-              ))}
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">드래그 상호작용 유형</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>요소 위치 변경 (자유 이동)</li>
+                <li>목록 순서 변경 (드래그 앤 드롭)</li>
+                <li>크기 조절 (리사이징)</li>
+                <li>캔버스 요소 드래그 (디자인 툴)</li>
+                <li>파일 드래그 (파일 시스템 상호작용)</li>
+              </ul>
             </div>
-          </div>
-          
-          <div className="bg-gray-100 p-4 rounded-lg">
-            <h3 className="text-lg font-medium mb-2">Flutter에서의 드래그 구현</h3>
-            <PrismCode
-              language="dart"
-              code={`// 드래그 가능한 위젯
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">구현 고려사항</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>드래그 중인 상태를 시각적으로 표시</li>
+                <li>드롭 가능한 영역 표시</li>
+                <li>드래그 중에도 부드러운 성능 유지</li>
+                <li>터치 기기에서의 드래그 지원</li>
+                <li>접근성을 위한 키보드 대체 옵션 제공</li>
+              </ul>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                language="dart"
+                code={`// 드래그 가능한 위젯
 class DraggableExample extends StatefulWidget {
   @override
   _DraggableExampleState createState() => _DraggableExampleState();
@@ -291,33 +292,44 @@ Column(
     ),
   ],
 )`}
-            />
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-4 bg-slate-50 rounded-md">
-              <h3 className="text-lg font-medium mb-2">드래그 상호작용 유형</h3>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>요소 위치 변경 (자유 이동)</li>
-                <li>목록 순서 변경 (드래그 앤 드롭)</li>
-                <li>크기 조절 (리사이징)</li>
-                <li>캔버스 요소 드래그 (디자인 툴)</li>
-                <li>파일 드래그 (파일 시스템 상호작용)</li>
-              </ul>
+              />
             </div>
-            
-            <div className="p-4 bg-slate-50 rounded-md">
-              <h3 className="text-lg font-medium mb-2">구현 고려사항</h3>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>드래그 중인 상태를 시각적으로 표시</li>
-                <li>드롭 가능한 영역 표시</li>
-                <li>드래그 중에도 부드러운 성능 유지</li>
-                <li>터치 기기에서의 드래그 지원</li>
-                <li>접근성을 위한 키보드 대체 옵션 제공</li>
-              </ul>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 space-y-6">
+              <DraggableBox />
+              
+              <div className="border rounded-lg overflow-hidden shadow-sm">
+                <div className="bg-slate-50 p-3 border-b">
+                  <h3 className="font-medium">드래그 앤 드롭 목록</h3>
+                  <p className="text-sm text-gray-600">항목을 드래그하여 순서를 변경해보세요</p>
+                </div>
+                
+                <div className="p-3 bg-white">
+                  {tasks.map((task, index) => (
+                    <div
+                      key={task.id}
+                      draggable
+                      onDragStart={() => handleDragStart(index)}
+                      onDragOver={(e) => handleDragOver(e, index)}
+                      onDragEnd={handleDragEnd}
+                      className={`border rounded-md p-3 mb-2 bg-white flex items-center ${draggedItem === index ? 'opacity-50' : ''}`}
+                    >
+                      <div className="cursor-grab mr-3 text-gray-400 hover:text-gray-600">
+                        <GripVertical size={18} />
+                      </div>
+                      <div>
+                        <div className="font-medium">{task.content}</div>
+                        <div className="text-xs text-gray-500">{task.category}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

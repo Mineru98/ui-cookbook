@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState, useEffect } from "react"
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react"
 import { PrismCode } from "@/components/ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function KeyboardSlide() {
   const [activeKeys, setActiveKeys] = useState<string[]>([])
@@ -73,150 +74,55 @@ export default function KeyboardSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-        <div className="prose max-w-none mb-6">
-          <h2 className="text-xl font-semibold mb-2">정의</h2>
-          <p>
-            키보드 상호작용은 물리적 또는 가상 키보드를 통해 애플리케이션과 소통하는 방식입니다.
-            웹 및 데스크톱 환경에서는 주요 상호작용 방식이며, 모바일 환경에서도 텍스트 입력 및 특수 기능 사용 시 필수적입니다.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="border rounded-lg overflow-hidden shadow-sm">
-            <div className="bg-slate-50 p-3 border-b">
-              <h3 className="font-medium">키보드 이벤트 데모</h3>
-              <p className="text-sm text-gray-600">아무 키나 눌러보세요</p>
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">정의</h3>
+              <p>
+                키보드 상호작용은 물리적 또는 가상 키보드를 통해 애플리케이션과 소통하는 방식입니다.
+                웹 및 데스크톱 환경에서는 주요 상호작용 방식이며, 모바일 환경에서도 텍스트 입력 및 특수 기능 사용 시 필수적입니다.
+              </p>
             </div>
-            
-            <div className="p-4 bg-white">
-              <div className="mb-4">
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm text-gray-500">마지막으로 누른 키:</span>
-                  <span className="font-mono font-medium bg-gray-100 px-2 py-1 rounded text-sm">
-                    {lastKey || "-"}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">현재 누르고 있는 키:</span>
-                  <div className="font-mono font-medium">
-                    {activeKeys.length > 0 ? (
-                      <div className="flex gap-1">
-                        {activeKeys.map(key => (
-                          <span key={key} className="bg-[#268052] text-white px-2 py-1 rounded text-xs">
-                            {key}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <span className="bg-gray-100 px-2 py-1 rounded text-sm">-</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="text-sm font-medium mb-2">키보드 게임</h4>
-                <div className="border-2 border-dashed border-gray-300 rounded-md p-4 h-32 relative">
-                  <div 
-                    className="absolute bg-[#268052] rounded-md w-10 h-10"
-                    style={{
-                      left: `${boxPosition.x}%`,
-                      top: `${boxPosition.y}%`,
-                      transform: 'translate(-50%, -50%)',
-                      transition: 'all 0.1s ease-out'
-                    }}
-                  />
-                  <div className="absolute bottom-2 right-2 text-xs text-gray-400">
-                    방향키로 상자를 움직여보세요
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium mb-2">키보드 상태 시각화</h4>
-                  <div className="grid grid-cols-3 text-center pb-6 w-40 mx-auto">
-                    <div></div>
-                    <div>
-                      <div 
-                        className={`w-10 h-10 border-2 ${isKeyActive("arrowup") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
-                      >
-                        <ArrowUp size={18} />
-                      </div>
-                    </div>
-                    <div></div>
-                    
-                    <div>
-                      <div 
-                        className={`w-10 h-10 border-2 ${isKeyActive("arrowleft") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
-                      >
-                        <ArrowLeft size={18} />
-                      </div>
-                    </div>
-                    <div>
-                      <div 
-                        className={`w-10 h-10 border-2 ${isKeyActive("arrowdown") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
-                      >
-                        <ArrowDown size={18} />
-                      </div>
-                    </div>
-                    <div>
-                      <div 
-                        className={`w-10 h-10 border-2 ${isKeyActive("arrowright") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
-                      >
-                        <ArrowRight size={18} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">일반적인 키보드 상호작용</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>단축키:</strong> Ctrl+C (복사), Ctrl+V (붙여넣기) 등</li>
+                <li><strong>내비게이션:</strong> Tab (다음 요소로), Shift+Tab (이전 요소로)</li>
+                <li><strong>폼 전송:</strong> Enter 키</li>
+                <li><strong>취소:</strong> Escape 키</li>
+                <li><strong>방향키:</strong> 이동, 메뉴 항목 선택</li>
+                <li><strong>페이지 이동:</strong> Page Up, Page Down</li>
+                <li><strong>아이템 선택:</strong> Space, Enter</li>
+              </ul>
             </div>
-          </div>
-          
-          <div className="border rounded-lg overflow-hidden shadow-sm">
-            <div className="bg-slate-50 p-3 border-b">
-              <h3 className="font-medium">일반적인 키보드 단축키</h3>
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">접근성 고려사항</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>모든 기능은 키보드만으로도 이용 가능해야 함</li>
+                <li>포커스 상태가 시각적으로 명확히 표시되어야 함</li>
+                <li>논리적인 탭 순서 유지</li>
+                <li>키보드 트랩 방지 (폼 내에 갇히지 않도록)</li>
+                <li>단축키는 일관된 패턴 유지</li>
+                <li>스크린 리더 호환성 보장</li>
+                <li>키보드 안내 제공 (사용 가능한 단축키 목록 등)</li>
+              </ul>
             </div>
-            
-            <div className="p-4 bg-white">
-              <table className="w-full text-sm">
-                <tbody>
-                  <tr className="border-b">
-                    <td className="py-2 font-medium">Ctrl/Cmd + C</td>
-                    <td className="py-2 text-gray-600">복사</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 font-medium">Ctrl/Cmd + V</td>
-                    <td className="py-2 text-gray-600">붙여넣기</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 font-medium">Ctrl/Cmd + Z</td>
-                    <td className="py-2 text-gray-600">실행 취소</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 font-medium">Ctrl/Cmd + S</td>
-                    <td className="py-2 text-gray-600">저장</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 font-medium">Ctrl/Cmd + F</td>
-                    <td className="py-2 text-gray-600">찾기</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 font-medium">Alt + Tab</td>
-                    <td className="py-2 text-gray-600">앱 전환</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-gray-100 p-4 rounded-lg mb-6">
-          <h3 className="text-lg font-medium mb-2">Flutter에서의 키보드 이벤트 처리</h3>
-          <PrismCode
-            language="dart"
-            code={`// 기본 키보드 이벤트 리스너
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                language="dart"
+                code={`// 기본 키보드 이벤트 리스너
 class KeyboardExample extends StatefulWidget {
   @override
   _KeyboardExampleState createState() => _KeyboardExampleState();
@@ -383,36 +289,144 @@ class PasteAction extends Action<PasteIntent> {
     return null;
   }
 }`}
-          />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">일반적인 키보드 상호작용</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><strong>단축키:</strong> Ctrl+C (복사), Ctrl+V (붙여넣기) 등</li>
-              <li><strong>내비게이션:</strong> Tab (다음 요소로), Shift+Tab (이전 요소로)</li>
-              <li><strong>폼 전송:</strong> Enter 키</li>
-              <li><strong>취소:</strong> Escape 키</li>
-              <li><strong>방향키:</strong> 이동, 메뉴 항목 선택</li>
-              <li><strong>페이지 이동:</strong> Page Up, Page Down</li>
-              <li><strong>아이템 선택:</strong> Space, Enter</li>
-            </ul>
-          </div>
-          
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">접근성 고려사항</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>모든 기능은 키보드만으로도 이용 가능해야 함</li>
-              <li>포커스 상태가 시각적으로 명확히 표시되어야 함</li>
-              <li>논리적인 탭 순서 유지</li>
-              <li>키보드 트랩 방지 (폼 내에 갇히지 않도록)</li>
-              <li>단축키는 일관된 패턴 유지</li>
-              <li>스크린 리더 호환성 보장</li>
-              <li>키보드 안내 제공 (사용 가능한 단축키 목록 등)</li>
-            </ul>
-          </div>
-        </div>
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="border rounded-lg overflow-hidden shadow-sm">
+                  <div className="bg-slate-50 p-3 border-b">
+                    <h3 className="font-medium">키보드 이벤트 데모</h3>
+                    <p className="text-sm text-gray-600">아무 키나 눌러보세요</p>
+                  </div>
+                  
+                  <div className="p-4 bg-white">
+                    <div className="mb-4">
+                      <div className="flex justify-between mb-2">
+                        <span className="text-sm text-gray-500">마지막으로 누른 키:</span>
+                        <span className="font-mono font-medium bg-gray-100 px-2 py-1 rounded text-sm">
+                          {lastKey || "-"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-500">현재 누르고 있는 키:</span>
+                        <div className="font-mono font-medium">
+                          {activeKeys.length > 0 ? (
+                            <div className="flex gap-1">
+                              {activeKeys.map(key => (
+                                <span key={key} className="bg-[#268052] text-white px-2 py-1 rounded text-xs">
+                                  {key}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="bg-gray-100 px-2 py-1 rounded text-sm">-</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">키보드 게임</h4>
+                      <div className="border-2 border-dashed border-gray-300 rounded-md p-4 h-32 relative">
+                        <div 
+                          className="absolute bg-[#268052] rounded-md w-10 h-10"
+                          style={{
+                            left: `${boxPosition.x}%`,
+                            top: `${boxPosition.y}%`,
+                            transform: 'translate(-50%, -50%)',
+                            transition: 'all 0.1s ease-out'
+                          }}
+                        />
+                        <div className="absolute bottom-2 right-2 text-xs text-gray-400">
+                          방향키로 상자를 움직여보세요
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="mt-4">
+                        <h4 className="text-sm font-medium mb-2">키보드 상태 시각화</h4>
+                        <div className="grid grid-cols-3 text-center pb-6 w-40 mx-auto">
+                          <div></div>
+                          <div>
+                            <div 
+                              className={`w-10 h-10 border-2 ${isKeyActive("arrowup") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
+                            >
+                              <ArrowUp size={18} />
+                            </div>
+                          </div>
+                          <div></div>
+                          
+                          <div>
+                            <div 
+                              className={`w-10 h-10 border-2 ${isKeyActive("arrowleft") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
+                            >
+                              <ArrowLeft size={18} />
+                            </div>
+                          </div>
+                          <div>
+                            <div 
+                              className={`w-10 h-10 border-2 ${isKeyActive("arrowdown") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
+                            >
+                              <ArrowDown size={18} />
+                            </div>
+                          </div>
+                          <div>
+                            <div 
+                              className={`w-10 h-10 border-2 ${isKeyActive("arrowright") ? 'bg-[#268052] text-white' : 'bg-white'} rounded-md flex items-center justify-center shadow-sm mx-auto`}
+                            >
+                              <ArrowRight size={18} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="border rounded-lg overflow-hidden shadow-sm">
+                  <div className="bg-slate-50 p-3 border-b">
+                    <h3 className="font-medium">일반적인 키보드 단축키</h3>
+                  </div>
+                  
+                  <div className="p-4 bg-white">
+                    <table className="w-full text-sm">
+                      <tbody>
+                        <tr className="border-b">
+                          <td className="py-2 font-medium">Ctrl/Cmd + C</td>
+                          <td className="py-2 text-gray-600">복사</td>
+                        </tr>
+                        <tr className="border-b">
+                          <td className="py-2 font-medium">Ctrl/Cmd + V</td>
+                          <td className="py-2 text-gray-600">붙여넣기</td>
+                        </tr>
+                        <tr className="border-b">
+                          <td className="py-2 font-medium">Ctrl/Cmd + Z</td>
+                          <td className="py-2 text-gray-600">실행 취소</td>
+                        </tr>
+                        <tr className="border-b">
+                          <td className="py-2 font-medium">Ctrl/Cmd + S</td>
+                          <td className="py-2 text-gray-600">저장</td>
+                        </tr>
+                        <tr className="border-b">
+                          <td className="py-2 font-medium">Ctrl/Cmd + F</td>
+                          <td className="py-2 text-gray-600">찾기</td>
+                        </tr>
+                        <tr>
+                          <td className="py-2 font-medium">Alt + Tab</td>
+                          <td className="py-2 text-gray-600">앱 전환</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

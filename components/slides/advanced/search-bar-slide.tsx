@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { Search, X, Mic, ArrowLeft, Filter, Camera, Sliders } from "lucide-react"
 import { PrismCode } from "../../ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function SearchBarSlide() {
   const [searchBarType, setSearchBarType] = useState<"basic" | "expandable" | "persistent" | "with-filters">("basic")
@@ -194,147 +195,77 @@ export default function SearchBarSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-        <div className="prose max-w-none mb-6">
-          <h2 className="text-xl font-semibold mb-3">정의</h2>
-          <p>
-            검색 바(Search Bar)는 사용자가 애플리케이션 내에서 특정 콘텐츠를 검색할 수 있게 해주는 
-            사용자 인터페이스 요소입니다. 일반적으로 텍스트 입력 필드와 검색 아이콘으로 구성되며, 
-            때로는 음성 검색, 필터링 옵션 등 추가 기능을 포함할 수 있습니다.
-          </p>
-        </div>
-        
-        <div className="mb-6">
-          <div className="flex justify-center mb-6 flex-wrap gap-2">
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${searchBarType === "basic" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSearchBarType("basic")}
-            >
-              기본형
-            </button>
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${searchBarType === "expandable" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => {setSearchBarType("expandable"); setIsExpanded(false);}}
-            >
-              확장형
-            </button>
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${searchBarType === "persistent" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSearchBarType("persistent")}
-            >
-              영구형
-            </button>
-            <button
-              className={`px-3 py-1.5 rounded text-sm ${searchBarType === "with-filters" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setSearchBarType("with-filters")}
-            >
-              필터형
-            </button>
-          </div>
-          
-          <div className="border rounded-lg overflow-hidden">
-            {/* 검색 바 렌더링 */}
-            {renderSearchBar()}
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="prose max-w-none mb-6">
+              <h2 className="text-xl font-semibold mb-3">정의</h2>
+              <p>
+                검색 바(Search Bar)는 사용자가 애플리케이션 내에서 특정 콘텐츠를 검색할 수 있게 해주는 
+                사용자 인터페이스 요소입니다. 일반적으로 텍스트 입력 필드와 검색 아이콘으로 구성되며, 
+                때로는 음성 검색, 필터링 옵션 등 추가 기능을 포함할 수 있습니다.
+              </p>
+            </div>
             
-            {/* 검색 결과 예시 */}
-            <div className="p-4 bg-white">
-              <h3 className="font-medium mb-2">
-                {searchBarType === "basic" 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <div className="p-4 bg-slate-50 rounded-md">
+                <h3 className="text-lg font-medium mb-2">검색 바 유형</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>
+                    <strong>기본형 (Basic)</strong>
+                    <p className="text-sm text-gray-600">항상 표시되는 기본적인 검색 필드</p>
+                  </li>
+                  <li>
+                    <strong>확장형 (Expandable)</strong>
+                    <p className="text-sm text-gray-600">아이콘을 클릭하면 확장되는 검색 바</p>
+                  </li>
+                  <li>
+                    <strong>영구형 (Persistent)</strong>
+                    <p className="text-sm text-gray-600">앱 바에 통합된 형태의 검색 필드</p>
+                  </li>
+                  <li>
+                    <strong>필터형 (With Filters)</strong>
+                    <p className="text-sm text-gray-600">추가 필터 옵션이 포함된 검색 바</p>
+                  </li>
+                  <li>
+                    <strong>서제스트형 (Suggestions)</strong>
+                    <p className="text-sm text-gray-600">검색어 입력 시 제안 항목을 표시</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="p-4 bg-slate-50 rounded-md">
+                <h3 className="text-lg font-medium mb-2">주요 구성 요소</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>검색 아이콘</li>
+                  <li>텍스트 입력 필드</li>
+                  <li>지우기 버튼</li>
+                  <li>음성 검색 버튼 (선택)</li>
+                  <li>필터 옵션 (선택)</li>
+                  <li>추천 검색어 (선택)</li>
+                  <li>최근 검색어 (선택)</li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                language="dart"
+                code={`// ${searchBarType === "basic" 
                   ? "기본 검색 바" 
                   : searchBarType === "expandable" 
                     ? "확장형 검색 바" 
                     : searchBarType === "persistent" 
                       ? "영구형 검색 바" 
-                      : "필터 포함 검색 바"}
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                {searchBarType === "basic" 
-                  ? "가장 일반적인 형태의 검색 바로, 검색 아이콘과 텍스트 필드로 구성됩니다." 
-                  : searchBarType === "expandable" 
-                    ? "처음에는 아이콘만 표시되다가 클릭 시 전체 검색 바로 확장되는 방식입니다." 
-                    : searchBarType === "persistent" 
-                      ? "화면 상단에 항상 표시되는 형태의 검색 바입니다." 
-                      : "검색 필터 옵션을 함께 제공하는 확장된 검색 바입니다."}
-              </p>
-              
-              {searchText ? (
-                <div className="space-y-2">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="p-3 border rounded-md">
-                      <div className="flex items-center">
-                        <div className="bg-gray-100 rounded-md w-10 h-10 flex items-center justify-center">
-                          <Search className="h-5 w-5 text-gray-500" />
-                        </div>
-                        <div className="ml-3">
-                          <div className="font-medium">검색 결과 {i}: {searchText}</div>
-                          <div className="text-sm text-gray-500">관련 검색어가 포함된 항목입니다.</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-10 text-gray-400">
-                  <Search className="h-10 w-10 mb-2 text-gray-300" />
-                  <p>검색어를 입력하세요</p>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div className="p-4 bg-slate-50 rounded-md">
-              <h3 className="text-lg font-medium mb-2">검색 바 유형</h3>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>
-                  <strong>기본형 (Basic)</strong>
-                  <p className="text-sm text-gray-600">항상 표시되는 기본적인 검색 필드</p>
-                </li>
-                <li>
-                  <strong>확장형 (Expandable)</strong>
-                  <p className="text-sm text-gray-600">아이콘을 클릭하면 확장되는 검색 바</p>
-                </li>
-                <li>
-                  <strong>영구형 (Persistent)</strong>
-                  <p className="text-sm text-gray-600">앱 바에 통합된 형태의 검색 필드</p>
-                </li>
-                <li>
-                  <strong>필터형 (With Filters)</strong>
-                  <p className="text-sm text-gray-600">추가 필터 옵션이 포함된 검색 바</p>
-                </li>
-                <li>
-                  <strong>서제스트형 (Suggestions)</strong>
-                  <p className="text-sm text-gray-600">검색어 입력 시 제안 항목을 표시</p>
-                </li>
-              </ul>
-            </div>
-
-            <div className="p-4 bg-slate-50 rounded-md">
-              <h3 className="text-lg font-medium mb-2">주요 구성 요소</h3>
-              <ul className="list-disc pl-6 space-y-1">
-                <li>검색 아이콘</li>
-                <li>텍스트 입력 필드</li>
-                <li>지우기 버튼</li>
-                <li>음성 검색 버튼 (선택)</li>
-                <li>필터 옵션 (선택)</li>
-                <li>추천 검색어 (선택)</li>
-                <li>최근 검색어 (선택)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md mt-6">
-          <h3 className="text-lg font-medium mb-2 text-[#268052]">Flutter 구현 코드</h3>
-          <PrismCode
-            language="dart"
-            code={`// ${searchBarType === "basic" 
-              ? "기본 검색 바" 
-              : searchBarType === "expandable" 
-                ? "확장형 검색 바" 
-                : searchBarType === "persistent" 
-                  ? "영구형 검색 바" 
-                  : "필터형 검색 바"} 구현 예시
+                      : "필터형 검색 바"} 구현 예시
 
 import 'package:flutter/material.dart';
 
@@ -392,7 +323,15 @@ class _${searchBarType === "basic"
   @override
   Widget build(BuildContext context) {
     ${searchBarType === "basic" 
-      ? "return Container(\n      decoration: BoxDecoration(\n        border: Border(\n          bottom: BorderSide(color: Colors.grey[300]!),\n        ),\n      ),\n      padding: EdgeInsets.all(8),\n      child: Container(\n        decoration: BoxDecoration(\n          color: Colors.grey[100],\n          borderRadius: BorderRadius.circular(8),\n        ),\n        child: TextField(\n          controller: _searchController,\n          decoration: InputDecoration(\n            hintText: '검색어를 입력하세요',\n            prefixIcon: Icon(Icons.search, color: Colors.grey[400], size: 20),\n            suffixIcon: _searchController.text.isNotEmpty\n                ? IconButton(\n                    icon: Icon(Icons.clear, color: Colors.grey[400], size: 20),\n                    onPressed: _clearSearch,\n                  )\n                : IconButton(\n                    icon: Icon(Icons.mic, color: Colors.grey[500], size: 20),\n                    onPressed: () {\n                      // 음성 검색 기능 실행\n                    },\n                  ),\n            border: InputBorder.none,\n            contentPadding: EdgeInsets.symmetric(vertical: 12),\n          ),\n          onChanged: (value) {\n            setState(() {});\n          },\n        ),\n      ),\n    );"
+      ? "return Container(\n      decoration: BoxDecoration(\n        border: Border(\n          bottom: BorderSide(color: Colors.grey[300]!),\n        ),\n      ),\n      padding: EdgeInsets.all(8),\n      child: Container(\n        decoration: BoxDecoration(\n          color: Colors.grey[100],\n          borderRadius: BorderRadius.circular(8),\n        ),\n        child: TextField(\n          controller: _searchController,\n          decoration: InputDecoration(\n            hintText: '검색어를 입력하세요',\n            prefixIcon: Icon(Icons.search, color: Colors.grey[400], size: 20),\n            suffixIcon: _searchController.text.isNotEmpty\
+                ? IconButton(\n                    icon: Icon(Icons.clear, color: Colors.grey[400], size: 20),\n                    onPressed: _clearSearch,\n                  )\n                : IconButton(\n                    icon: Icon(Icons.mic, color: Colors.grey[500], size: 20),\n                    onPressed: () {\n                      // 음성 검색 기능 실행\n                    },\n                  ),\
+            border: InputBorder.none,\
+            contentPadding: EdgeInsets.symmetric(vertical: 12),\
+          ),\
+          onChanged: (value) {\n            setState(() {});\n          },\
+        ),\
+      ),\
+    );"
       : searchBarType === "expandable"
       ? "return Container(\n      decoration: BoxDecoration(\n        border: Border(\n          bottom: BorderSide(color: Colors.grey[300]!),\n        ),\n      ),\n      padding: EdgeInsets.all(8),\n      child: Row(\n        children: [\n          _isExpanded\
               ? IconButton(\n                  icon: Icon(Icons.arrow_back),\n                  onPressed: () {\n                    setState(() {\n                      _isExpanded = false;\n                      _searchController.clear();\n                    });\n                  },\n                )\n              : Container(),\n          _isExpanded\
@@ -409,8 +348,91 @@ class _${searchBarType === "basic"
     }
   }
 }`}
-          />
-        </div>
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="mb-6">
+              <div className="flex justify-center mb-6 flex-wrap gap-2">
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${searchBarType === "basic" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSearchBarType("basic")}
+                >
+                  기본형
+                </button>
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${searchBarType === "expandable" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => {setSearchBarType("expandable"); setIsExpanded(false);}}
+                >
+                  확장형
+                </button>
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${searchBarType === "persistent" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSearchBarType("persistent")}
+                >
+                  영구형
+                </button>
+                <button
+                  className={`px-3 py-1.5 rounded text-sm ${searchBarType === "with-filters" ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                  onClick={() => setSearchBarType("with-filters")}
+                >
+                  필터형
+                </button>
+              </div>
+              
+              <div className="border rounded-lg overflow-hidden">
+                {/* 검색 바 렌더링 */}
+                {renderSearchBar()}
+                
+                {/* 검색 결과 예시 */}
+                <div className="p-4 bg-white">
+                  <h3 className="font-medium mb-2">
+                    {searchBarType === "basic" 
+                      ? "기본 검색 바" 
+                      : searchBarType === "expandable" 
+                        ? "확장형 검색 바" 
+                        : searchBarType === "persistent" 
+                          ? "영구형 검색 바" 
+                          : "필터 포함 검색 바"}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    {searchBarType === "basic" 
+                      ? "가장 일반적인 형태의 검색 바로, 검색 아이콘과 텍스트 필드로 구성됩니다." 
+                      : searchBarType === "expandable" 
+                        ? "처음에는 아이콘만 표시되다가 클릭 시 전체 검색 바로 확장되는 방식입니다." 
+                        : searchBarType === "persistent" 
+                          ? "화면 상단에 항상 표시되는 형태의 검색 바입니다." 
+                          : "검색 필터 옵션을 함께 제공하는 확장된 검색 바입니다."}
+                  </p>
+                  
+                  {searchText ? (
+                    <div className="space-y-2">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="p-3 border rounded-md">
+                          <div className="flex items-center">
+                            <div className="bg-gray-100 rounded-md w-10 h-10 flex items-center justify-center">
+                              <Search className="h-5 w-5 text-gray-500" />
+                            </div>
+                            <div className="ml-3">
+                              <div className="font-medium">검색 결과 {i}: {searchText}</div>
+                              <div className="text-sm text-gray-500">관련 검색어가 포함된 항목입니다.</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+                      <Search className="h-10 w-10 mb-2 text-gray-300" />
+                      <p>검색어를 입력하세요</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState, useEffect } from "react"
 import { Loader2 } from "lucide-react"
 import { PrismCode } from "@/components/ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 // Dart 코드 예제를 위한 컴포넌트
 const DartCodeExamples = () => {
@@ -447,35 +448,33 @@ class HomeScreen extends StatelessWidget {
 
   return (
     <div className="mt-8 space-y-6">
-      <h3 className="text-lg font-medium mb-3">Flutter/Dart 구현 예제</h3>
-      
       {/* 기본형 스플래시 */}
-      <div className="space-y-2">
-        <h4 className="font-medium">기본 스플래시 화면</h4>
+      <div className="space-y-2 bg-gray-800 p-4 border rounded-md mb-6">
+        <h4 className="text-lg font-medium mb-3 text-white">기본 스플래시 화면</h4>
         <PrismCode code={basicSplashCode} language="dart" />
       </div>
 
       {/* 애니메이션형 스플래시 */}
-      <div className="space-y-2">
-        <h4 className="font-medium">애니메이션 스플래시 화면</h4>
+      <div className="space-y-2 bg-gray-800 p-4 border rounded-md mb-6">
+        <h4 className="text-lg font-medium mb-3 text-white">애니메이션 스플래시 화면</h4>
         <PrismCode code={animatedSplashCode} language="dart" />
       </div>
 
       {/* 진행률형 스플래시 */}
-      <div className="space-y-2">
-        <h4 className="font-medium">진행률 표시 스플래시 화면</h4>
+      <div className="space-y-2 bg-gray-800 p-4 border rounded-md mb-6">
+        <h4 className="text-lg font-medium mb-3 text-white">진행률 표시 스플래시 화면</h4>
         <PrismCode code={progressSplashCode} language="dart" />
       </div>
 
       {/* 브랜딩형 스플래시 */}
-      <div className="space-y-2">
-        <h4 className="font-medium">브랜딩 스플래시 화면</h4>
+      <div className="space-y-2 bg-gray-800 p-4 border rounded-md mb-6">
+        <h4 className="text-lg font-medium mb-3 text-white">브랜딩 스플래시 화면</h4>
         <PrismCode code={brandedSplashCode} language="dart" />
       </div>
       
       {/* 전체 스플래시 화면 관리 */}
-      <div className="space-y-2">
-        <h4 className="font-medium">스플래시 화면 자동 전환 구현</h4>
+      <div className="space-y-2 bg-gray-800 p-4 border rounded-md mb-6">
+        <h4 className="text-lg font-medium mb-3 text-white">스플래시 화면 자동 전환 구현</h4>
         <PrismCode code={splashManagerCode} language="dart" />
       </div>
     </div>
@@ -487,6 +486,341 @@ export default function SplashPageSlide() {
   const [isLoading, setIsLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   
+  // 스플래시 코드 변수 정의
+  const basicSplashCode = `import 'package:flutter/material.dart';
+
+class BasicSplashScreen extends StatelessWidget {
+  const BasicSplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: const Color(0xFF268052),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Center(
+                child: Text(
+                  'APP',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '앱 이름',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 16),
+            const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}`
+
+  const animatedSplashCode = `import 'package:flutter/material.dart';
+
+class AnimatedSplashScreen extends StatefulWidget {
+  const AnimatedSplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AnimatedSplashScreen> createState() => _AnimatedSplashScreenState();
+}
+
+class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _bounceAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat(reverse: true);
+
+    _bounceAnimation = Tween<double>(begin: 0, end: 20).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Color(0xFF268052),
+              Color(0xFF134429),
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _bounceAnimation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(0, -_bounceAnimation.value),
+                    child: child,
+                  );
+                },
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'LOGO',
+                      style: TextStyle(
+                        color: Color(0xFF268052),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              FadeTransition(
+                opacity: _controller,
+                child: const Text(
+                  '애니메이션 스플래시',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              FadeTransition(
+                opacity: _controller,
+                child: const Text(
+                  '앱 로딩 중...',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}`
+
+  const progressSplashCode = `import 'package:flutter/material.dart';
+import 'dart:async';
+
+class ProgressSplashScreen extends StatefulWidget {
+  const ProgressSplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProgressSplashScreen> createState() => _ProgressSplashScreenState();
+}
+
+class _ProgressSplashScreenState extends State<ProgressSplashScreen> {
+  double _progress = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startLoading();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startLoading() {
+    _timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
+      setState(() {
+        if (_progress < 100) {
+          _progress += 10;
+        } else {
+          _timer.cancel();
+          // 여기서 홈 화면으로 이동
+          // Navigator.of(context).pushReplacement(...);
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF4F4F4),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: const BoxDecoration(
+                color: Color(0xFF268052),
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Text(
+                  'UI',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              '\${_progress.toInt()}% 완료',
+              style: const TextStyle(
+                color: Color(0xFF268052),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: _progress / 100,
+                  backgroundColor: Colors.grey.shade200,
+                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF268052)),
+                  minHeight: 8,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '리소스 로딩 중...',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}`
+
+  const brandedSplashCode = `import 'package:flutter/material.dart';
+
+class BrandedSplashScreen extends StatelessWidget {
+  const BrandedSplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF268052),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Text(
+                  'UI',
+                  style: TextStyle(
+                    color: Color(0xFF268052),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '브랜드명',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                letterSpacing: 3,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '브랜드 슬로건이나 한 줄 설명',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}`
+
   // 스플래시 화면의 로딩 상태를 보여주기 위한 효과
   useEffect(() => {
     if (isLoading) {
@@ -605,7 +939,15 @@ export default function SplashPageSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
         <div className="prose max-w-none mb-6">
           <h2 className="text-xl font-semibold mb-3">정의</h2>
           <p>
@@ -775,6 +1117,260 @@ export default function SplashPageSlide() {
         
         {/* 다트 코드 예제 */}
         <DartCodeExamples />
+      </TabsContent>
+
+      <TabsContent value="code" className="mt-4">
+        <div className="bg-gray-800 p-4 border rounded-md mb-6">
+          <PrismCode
+            language="dart"
+            code={splashType === "basic" ? basicSplashCode : 
+                  splashType === "animated" ? animatedSplashCode : 
+                  splashType === "progress" ? progressSplashCode : 
+                  brandedSplashCode}
+          />
+        </div>
+        
+        <div className="bg-gray-800 p-4 border rounded-md mb-6">
+          <h3 className="text-lg font-medium mb-3 text-white">스플래시 화면 자동 전환 구현</h3>
+          <PrismCode
+            language="dart"
+            code={`import 'package:flutter/material.dart';
+import 'dart:async';
+
+// 메인 애플리케이션
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '스플래시 화면 데모',
+      theme: ThemeData(
+        primaryColor: const Color(0xFF268052),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF268052)),
+      ),
+      home: const SplashScreen(),
+    );
+  }
+}
+
+// 스플래시 화면
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(
+      const Duration(seconds: 3), 
+      () => Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF268052),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Center(
+                child: Text(
+                  'APP',
+                  style: TextStyle(
+                    color: Color(0xFF268052),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 홈 화면 (스플래시 이후 표시)
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('홈 화면'),
+        backgroundColor: const Color(0xFF268052),
+      ),
+      body: const Center(
+        child: Text('앱 메인 컨텐츠'),
+      ),
+    );
+  }
+}`}
+          />
+        </div>
+      </TabsContent>
+
+      <TabsContent value="demo" className="mt-4">
+        <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">스플래시 화면 유형 선택</label>
+            <select
+              value={splashType}
+              onChange={(e) => setSplashType(e.target.value as any)}
+              className="w-full p-2 border rounded-md mb-4"
+            >
+              <option value="basic">기본형 스플래시</option>
+              <option value="animated">애니메이션형 스플래시</option>
+              <option value="branded">브랜딩형 스플래시</option>
+              <option value="progress">진행률형 스플래시</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            {/* 스플래시 데모 영역 */}
+            <div className="w-full border rounded-lg overflow-hidden">
+              {!isLoading ? (
+                <div className="bg-white p-4 text-center">
+                  <button
+                    className="px-4 py-2 bg-[#268052] text-white rounded-md text-sm"
+                    onClick={handleStartLoading}
+                  >
+                    스플래시 화면 보기
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {splashType === "basic" && (
+                    <div className="h-72 bg-white flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-20 h-20 bg-[#268052] rounded-lg flex items-center justify-center text-white font-bold text-xl mx-auto">
+                          APP
+                        </div>
+                        <div className="mt-4 font-medium text-gray-800">앱 이름</div>
+                        <div className="mt-4 flex justify-center">
+                          <Loader2 className="animate-spin h-5 w-5 text-gray-500" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {splashType === "animated" && (
+                    <div className="h-72 bg-gradient-to-br from-[#268052] to-[#134429] flex flex-col items-center justify-center">
+                      <div className="animate-[bounce_1.5s_infinite]">
+                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-[#268052] font-bold text-xl p-5">
+                          LOGO
+                        </div>
+                      </div>
+                      <div className="mt-6 text-white font-medium animate-[fadeIn_2s_ease-in]">
+                        애니메이션 스플래시
+                      </div>
+                      <div className="mt-2 text-white/70 text-sm animate-[fadeIn_2s_ease-in]">
+                        앱 로딩 중...
+                      </div>
+                    </div>
+                  )}
+
+                  {splashType === "branded" && (
+                    <div className="h-72 bg-[#268052] flex flex-col items-center justify-center text-white">
+                      <div className="flex flex-col items-center">
+                        <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-[#268052] font-bold text-2xl p-5 mb-4">
+                          UI
+                        </div>
+                        <div className="text-xl font-bold uppercase tracking-widest">브랜드명</div>
+                        <div className="mt-2 text-white/70 text-sm">브랜드 슬로건이나 한 줄 설명</div>
+                        <div className="mt-6">
+                          <Loader2 className="animate-spin h-6 w-6" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {splashType === "progress" && (
+                    <div className="h-72 bg-[#f4f4f4] flex flex-col items-center justify-center">
+                      <div className="w-20 h-20 bg-[#268052] rounded-full flex items-center justify-center text-white font-bold text-xl p-5">
+                        UI
+                      </div>
+                      <div className="mt-6 font-medium text-[#268052]">
+                        {progress}% 완료
+                      </div>
+                      <div className="w-56 h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
+                        <div 
+                          className="bg-[#268052] h-full transition-all duration-300 ease-in-out"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                      <div className="mt-2 text-gray-500 text-sm">
+                        리소스 로딩 중...
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            {!isLoading && (
+              <div className="w-full text-sm mt-4 p-4 bg-gray-50 rounded-md">
+                <h3 className="font-medium mb-2">특징:</h3>
+                {splashType === "basic" && (
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>간결한 로고와 앱 이름 표시</li>
+                    <li>로딩 인디케이터로 작업 진행 중임을 표시</li>
+                    <li>깔끔한 흰색 배경으로 브랜드 정체성 강조</li>
+                  </ul>
+                )}
+                {splashType === "animated" && (
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>바운스 효과로 시각적 흥미 유발</li>
+                    <li>그라디언트 배경으로 활기찬 느낌 전달</li>
+                    <li>페이드인 애니메이션으로 부드러운 진입감 제공</li>
+                  </ul>
+                )}
+                {splashType === "branded" && (
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>브랜드 색상을 전면에 활용한 강렬한 첫인상</li>
+                    <li>브랜드명과 슬로건을 함께 표시</li>
+                    <li>화면 중앙에 로고를 배치하여 브랜드 인지도 강화</li>
+                  </ul>
+                )}
+                {splashType === "progress" && (
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>진행 상황을 명확하게 표시하는 프로그레스 바</li>
+                    <li>퍼센트 표시로 로딩 단계 명확화</li>
+                    <li>밝은 배경에 브랜드 색상 포인트로 가독성 확보</li>
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

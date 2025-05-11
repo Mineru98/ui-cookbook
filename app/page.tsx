@@ -181,7 +181,7 @@ export default function Home() {
                       <h3 className="text-sm font-semibold text-muted-foreground px-4 py-1">UI 요소</h3>
                       <Separator className="my-1" />
                     </div>
-                    {slides.slice(2, 20).map((slide, index) => (
+                    {slides.slice(2, 18).map((slide, index) => (
                       <Button
                         key={slide.id}
                         variant={currentSlide === index + 2 ? "default" : "ghost"}
@@ -203,7 +203,29 @@ export default function Home() {
                       <h3 className="text-sm font-semibold text-muted-foreground px-4 py-1">UI 속성 용어</h3>
                       <Separator className="my-1" />
                     </div>
-                    {slides.slice(20, 21).map((slide, index) => (
+                    {slides.slice(18, 20).map((slide, index) => (
+                      <Button
+                        key={slide.id}
+                        variant={currentSlide === index + 18 ? "default" : "ghost"}
+                        className="w-full justify-start"
+                        onClick={() => {
+                          goToSlide(index + 18)
+                        }}
+                      >
+                        {index + 19}.{" "}
+                        {slide.id
+                          .split("-")
+                          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                          .join(" ")}
+                      </Button>
+                    ))}
+
+                    {/* UI 액션 용어 섹션 */}
+                    <div className="pt-2">
+                      <h3 className="text-sm font-semibold text-muted-foreground px-4 py-1">UI 액션 용어</h3>
+                      <Separator className="my-1" />
+                    </div>
+                    {slides.slice(20, 23).map((slide, index) => (
                       <Button
                         key={slide.id}
                         variant={currentSlide === index + 20 ? "default" : "ghost"}
@@ -220,43 +242,21 @@ export default function Home() {
                       </Button>
                     ))}
 
-                    {/* UI 액션 용어 섹션 */}
-                    <div className="pt-2">
-                      <h3 className="text-sm font-semibold text-muted-foreground px-4 py-1">UI 액션 용어</h3>
-                      <Separator className="my-1" />
-                    </div>
-                    {slides.slice(21, 25).map((slide, index) => (
-                      <Button
-                        key={slide.id}
-                        variant={currentSlide === index + 21 ? "default" : "ghost"}
-                        className="w-full justify-start"
-                        onClick={() => {
-                          goToSlide(index + 21)
-                        }}
-                      >
-                        {index + 22}.{" "}
-                        {slide.id
-                          .split("-")
-                          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                          .join(" ")}
-                      </Button>
-                    ))}
-
                     {/* 고급 컴포넌트 섹션 */}
                     <div className="pt-2">
                       <h3 className="text-sm font-semibold text-muted-foreground px-4 py-1">고급 컴포넌트</h3>
                       <Separator className="my-1" />
                     </div>
-                    {slides.slice(25, 38).map((slide, index) => (
+                    {slides.slice(23, 38).map((slide, index) => (
                       <Button
                         key={slide.id}
-                        variant={currentSlide === index + 25 ? "default" : "ghost"}
+                        variant={currentSlide === index + 23 ? "default" : "ghost"}
                         className="w-full justify-start"
                         onClick={() => {
-                          goToSlide(index + 25)
+                          goToSlide(index + 23)
                         }}
                       >
-                        {index + 26}.{" "}
+                        {index + 24}.{" "}
                         {slide.id
                           .split("-")
                           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

@@ -60,9 +60,8 @@ export default function PaddingMarginSlide() {
           </TabsContent>
 
           <TabsContent value="code" className="mt-4">
-            <div className="bg-gray-100 p-4 rounded-lg">
+            <div className="bg-gray-800 p-4 rounded-lg">
               <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">Flutter/Dart에서의 패딩과 마진</h3>
                 <PrismCode
                   language="dart"
                   code={`// Flutter/Dart에서의 패딩

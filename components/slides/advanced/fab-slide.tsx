@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { Plus, MessageSquare, Mail, Phone, Share2, X } from "lucide-react"
 import { PrismCode } from "../../ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function FabSlide() {
   const [fabType, setFabType] = useState<"basic" | "extended" | "mini" | "speed-dial">("basic")
@@ -308,7 +309,15 @@ class BasicFabExample extends StatelessWidget {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
         <div className="prose max-w-none mb-6">
           <h2 className="text-xl font-semibold mb-3">정의</h2>
           <p>
@@ -386,13 +395,6 @@ class BasicFabExample extends StatelessWidget {
             </div>
           </div>
           
-          <div className="mt-6">
-            <h3 className="text-lg font-medium mb-3">Flutter 구현 코드</h3>
-            <div className="overflow-x-auto rounded-lg">
-              <PrismCode code={getDartCode()} language="dart" />
-            </div>
-          </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div className="p-4 bg-slate-50 rounded-md">
               <h3 className="text-lg font-medium mb-2">FAB 유형</h3>
@@ -456,6 +458,119 @@ class BasicFabExample extends StatelessWidget {
             </li>
           </ul>
         </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 border rounded-md">
+              <div className="overflow-x-auto rounded-lg">
+                <PrismCode code={getDartCode()} language="dart" />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">FAB 유형 선택</label>
+                <select
+                  value={fabType}
+                  onChange={(e) => setFabType(e.target.value as any)}
+                  className="w-full p-2 border rounded-md mb-4"
+                >
+                  <option value="basic">기본형 (Regular FAB)</option>
+                  <option value="extended">확장형 (Extended FAB)</option>
+                  <option value="mini">미니형 (Mini FAB)</option>
+                  <option value="speed-dial">스피드 다이얼 (Speed Dial)</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col items-center gap-4">
+                {/* 데모 섹션에서 FAB 표시 */}
+                <div className="w-full h-64 bg-gray-50 border rounded-lg relative overflow-hidden">
+                  <div className="absolute right-4 bottom-4">
+                    {fabType === "extended" ? (
+                      <button 
+                        className="px-4 py-3 bg-[#268052] text-white rounded-full shadow-lg flex items-center"
+                      >
+                        <Plus className="h-5 w-5 mr-2" />
+                        <span className="font-medium text-sm">새 항목 추가</span>
+                      </button>
+                    ) : fabType === "mini" ? (
+                      <button 
+                        className="p-2 bg-[#268052] text-white rounded-full shadow-lg flex items-center justify-center"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </button>
+                    ) : fabType === "speed-dial" ? (
+                      <div>
+                        {isSpeedDialOpen && (
+                          <div className="flex flex-col items-end gap-3 mb-3">
+                            <div className="flex items-center">
+                              <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded mr-2">
+                                메시지
+                              </span>
+                              <button className="p-3 bg-blue-500 text-white rounded-full shadow-md">
+                                <MessageSquare className="h-5 w-5" />
+                              </button>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded mr-2">
+                                이메일
+                              </span>
+                              <button className="p-3 bg-red-500 text-white rounded-full shadow-md">
+                                <Mail className="h-5 w-5" />
+                              </button>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded mr-2">
+                                전화
+                              </span>
+                              <button className="p-3 bg-green-500 text-white rounded-full shadow-md">
+                                <Phone className="h-5 w-5" />
+                              </button>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded mr-2">
+                                공유
+                              </span>
+                              <button className="p-3 bg-purple-500 text-white rounded-full shadow-md">
+                                <Share2 className="h-5 w-5" />
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        <button 
+                          className="p-4 bg-[#268052] text-white rounded-full shadow-lg flex items-center justify-center"
+                          onClick={() => setIsSpeedDialOpen(!isSpeedDialOpen)}
+                        >
+                          {isSpeedDialOpen ? (
+                            <X className="h-6 w-6" />
+                          ) : (
+                            <Plus className="h-6 w-6" />
+                          )}
+                        </button>
+                      </div>
+                    ) : (
+                      <button 
+                        className="p-4 bg-[#268052] text-white rounded-full shadow-lg flex items-center justify-center"
+                      >
+                        <Plus className="h-6 w-6" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-full text-center text-sm mt-4">
+                  {fabType === "speed-dial" && (
+                    <p className="text-gray-600">
+                      FAB를 클릭하여 스피드 다이얼 옵션을 {isSpeedDialOpen ? '닫기' : '열기'}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   );

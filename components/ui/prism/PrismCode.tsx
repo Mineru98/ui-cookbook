@@ -24,10 +24,15 @@ export function PrismCode({ code, language, plugins = [] }: PrismCodeProps) {
   const preClass = `language-${language} ${plugins.join(" ")}`.trim();
 
   return (
-    <pre className={preClass} tabIndex={0}>
-      <code ref={codeRef} className={`language-${language}`}>
-        {code.trim()}
-      </code>
-    </pre>
+    <React.Fragment>
+      <div className="flex text-xs mb-2 text-gray-400">
+        <span className="px-2 py-1 rounded bg-gray-700 text-white">Dart</span>
+      </div>
+      <pre className={preClass} tabIndex={0}>
+        <code ref={codeRef} className={`language-${language}`}>
+          {code.trim()}
+        </code>
+      </pre>
+    </React.Fragment>
   );
 }

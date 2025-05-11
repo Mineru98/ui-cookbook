@@ -3,6 +3,7 @@
 import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { PrismCode } from "../../ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface Card {
   id: number
@@ -50,65 +51,52 @@ export default function CardViewSlide() {
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="space-y-8 max-h-[calc(100vh-12rem)] overflow-y-auto">
-        <div className="prose max-w-none mb-6">
-          <h2 className="text-xl font-semibold mb-3">정의</h2>
-          <p>
-            카드 뷰는 관련 정보를 담은 컨테이너로, 주로 이미지, 제목, 간략한 설명과 액션을 포함합니다.
-            정보를 시각적으로 구분하고 그룹화하여 사용자가 콘텐츠를 쉽게 스캔하고 상호작용할 수 있게 합니다.
-          </p>
-        </div>
-        
-        <div className="mb-8">
-          <h3 className="text-lg font-medium mb-4">카드 컴포넌트 예시</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {cards.map((card) => (
-              <div 
-                key={card.id}
-                className={`border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer ${selectedCard === card.id ? 'ring-2 ring-[#268052]' : ''}`}
-                onClick={() => setSelectedCard(card.id === selectedCard ? null : card.id)}
-              >
-                <div className="h-32 bg-gradient-to-r from-[#268052]/80 to-[#268052] flex items-center justify-center text-4xl">
-                  {card.image}
-                </div>
-                <div className="p-4">
-                  <h4 className="font-medium text-lg mb-2">{card.title}</h4>
-                  <p className="text-gray-600 text-sm mb-3">{card.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {card.tags.map((tag, idx) => (
-                      <span 
-                        key={idx} 
-                        className="px-2 py-0.5 bg-[#268052]/10 text-[#268052] text-xs rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="border-t p-3 flex justify-end bg-gray-50">
-                  <button className="px-3 py-1 bg-[#268052] text-white text-sm rounded-md hover:bg-[#268052]/90">
-                    자세히 보기
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {selectedCard && (
-            <div className="mt-4 p-4 bg-[#268052]/10 rounded-md">
-              <p className="text-sm text-[#268052]">
-                카드 #{selectedCard}가 선택되었습니다. 실제 애플리케이션에서는 상세 정보 표시, 
-                모달 열기, 새 페이지로 이동 등의 작업이 수행될 수 있습니다.
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">정의</h3>
+              <p>
+                카드 뷰는 관련 정보를 담은 컨테이너로, 주로 이미지, 제목, 간략한 설명과 액션을 포함합니다.
+                정보를 시각적으로 구분하고 그룹화하여 사용자가 콘텐츠를 쉽게 스캔하고 상호작용할 수 있게 합니다.
               </p>
             </div>
-          )}
-        </div>
-        
-        <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md mb-6">
-          <h3 className="text-lg font-medium mb-2 text-[#268052]">Flutter 구현 코드</h3>
-          <PrismCode
-            language="dart"
-            code={`// 기본 카드 위젯
+
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">주요 구성 요소</h3>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>제목: 간결하고 명확한 제목</li>
+                <li>이미지/아이콘: 시각적 요소 (선택 사항)</li>
+                <li>설명: 간략한 내용 요약</li>
+                <li>액션 버튼: 상호작용 요소</li>
+                <li>메타데이터: 태그, 날짜, 저자 등</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-2">사용 사례</h3>
+              <ul className="list-disc pl-6 space-y-1">
+                <li>상품 목록 (이커머스)</li>
+                <li>뉴스 및 블로그 글</li>
+                <li>소셜 미디어 포스트</li>
+                <li>대시보드 정보 패널</li>
+                <li>사용자 프로필</li>
+                <li>프로젝트 또는 태스크 표시</li>
+              </ul>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                language="dart"
+                code={`// 기본 카드 위젯
 Card(
   elevation: 2.0,
   shape: RoundedRectangleBorder(
@@ -221,46 +209,57 @@ Card(
     ],
   ),
 )`}
-          />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">주요 구성 요소</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>제목: 간결하고 명확한 제목</li>
-              <li>이미지/아이콘: 시각적 요소 (선택 사항)</li>
-              <li>설명: 간략한 내용 요약</li>
-              <li>액션 버튼: 상호작용 요소</li>
-              <li>메타데이터: 태그, 날짜, 저자 등</li>
-            </ul>
-          </div>
+              />
+            </div>
+          </TabsContent>
 
-          <div className="p-4 bg-slate-50 rounded-md">
-            <h3 className="text-lg font-medium mb-2">사용 사례</h3>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>상품 목록 (이커머스)</li>
-              <li>뉴스 및 블로그 글</li>
-              <li>소셜 미디어 포스트</li>
-              <li>대시보드 정보 패널</li>
-              <li>사용자 프로필</li>
-              <li>프로젝트 또는 태스크 표시</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md">
-          <h3 className="text-lg font-medium mb-2 text-[#268052]">디자인 가이드라인</h3>
-          <ul className="list-disc pl-6 space-y-1 text-gray-700">
-            <li>일관된 크기와 간격 사용</li>
-            <li>명확한 시각적 계층구조 유지</li>
-            <li>클릭 영역을 충분히 크게 설계</li>
-            <li>카드 간 일정한 간격 유지</li>
-            <li>문맥에 맞는 상호작용 제공</li>
-            <li>반응형 그리드에 대응하는 디자인</li>
-            <li>중요한 정보는 상단에 배치</li>
-          </ul>
-        </div>
+          <TabsContent value="demo" className="mt-4">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+              <h3 className="text-lg font-medium mb-4">카드 컴포넌트 예시</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {cards.map((card) => (
+                  <div 
+                    key={card.id}
+                    className={`border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer ${selectedCard === card.id ? 'ring-2 ring-[#268052]' : ''}`}
+                    onClick={() => setSelectedCard(card.id === selectedCard ? null : card.id)}
+                  >
+                    <div className="h-32 bg-gradient-to-r from-[#268052]/80 to-[#268052] flex items-center justify-center text-4xl">
+                      {card.image}
+                    </div>
+                    <div className="p-4">
+                      <h4 className="font-medium text-lg mb-2">{card.title}</h4>
+                      <p className="text-gray-600 text-sm mb-3">{card.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {card.tags.map((tag, idx) => (
+                          <span 
+                            key={idx} 
+                            className="px-2 py-0.5 bg-[#268052]/10 text-[#268052] text-xs rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="border-t p-3 flex justify-end bg-gray-50">
+                      <button className="px-3 py-1 bg-[#268052] text-white text-sm rounded-md hover:bg-[#268052]/90">
+                        자세히 보기
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {selectedCard && (
+                <div className="mt-4 p-4 bg-[#268052]/10 rounded-md">
+                  <p className="text-sm text-[#268052]">
+                    카드 #{selectedCard}가 선택되었습니다. 실제 애플리케이션에서는 상세 정보 표시, 
+                    모달 열기, 새 페이지로 이동 등의 작업이 수행될 수 있습니다.
+                  </p>
+                </div>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

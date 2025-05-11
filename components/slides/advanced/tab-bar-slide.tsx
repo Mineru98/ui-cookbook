@@ -4,6 +4,7 @@ import SlideLayout from "../slide-layout"
 import { useState } from "react"
 import { Clock, Bookmark, Compass, User } from "lucide-react"
 import { PrismCode } from "../../ui/prism/PrismCode"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function TabBarSlide() {
   const [activeTab, setActiveTab] = useState("recent")
@@ -577,60 +578,141 @@ class _BasicTabBarExampleState extends State<BasicTabBarExample> with SingleTick
             display: none; /* Chrome, Safari, Opera */
           }
       `}</style>
-      <div className="grid grid-cols-1 gap-8">
-      <div className="space-y-4 max-h-[calc(100vh-12rem)] overflow-y-auto">
-          <div className="flex flex-wrap gap-2 mb-4">
-            <button 
-              className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'basic' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setTabBarStyle('basic')}
-            >
-              기본형
-            </button>
-            <button 
-              className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'underline' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setTabBarStyle('underline')}
-            >
-              아이콘 언더라인형
-            </button>
-            <button 
-              className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'scrollable' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setTabBarStyle('scrollable')}
-            >
-              스크롤형
-            </button>
-            <button 
-              className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'pills' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setTabBarStyle('pills')}
-            >
-              필 탭형
-            </button>
-            <button 
-              className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'material' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
-              onClick={() => setTabBarStyle('material')}
-            >
-              머티리얼형
-            </button>
-          </div>
-          
-          <div className="border rounded-md shadow-sm overflow-hidden">
-            <div className="p-4 flex justify-center">
-              <div className="w-full max-w-md">
-                {renderTabBar()}
-                <div className="p-8 text-center text-gray-500">
-                  {activeTab} 콘텐츠
+      <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
+        <Tabs defaultValue="description">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="description">설명</TabsTrigger>
+            <TabsTrigger value="code">코드</TabsTrigger>
+            <TabsTrigger value="demo">데모</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="description" className="space-y-4 mt-4">
+            <div className="prose max-w-none mb-6">
+              <h2 className="text-xl font-semibold mb-3">정의</h2>
+              <p>
+                탭 바(Tab Bar)는 동일한 계층 내에서 여러 화면 또는 콘텐츠 섹션 간 전환을 위한 
+                내비게이션 컴포넌트입니다. 사용자가 쉽게 관련 콘텐츠 간을 이동할 수 있도록 
+                카테고리별로 구분된 직관적인 인터페이스를 제공합니다.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 bg-slate-50 rounded-md">
+                <h3 className="text-lg font-medium mb-2">탭 바 스타일</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>
+                    <strong>기본형 (Basic)</strong>
+                    <p className="text-sm text-gray-600">일반적인 텍스트 탭, 하단 인디케이터로 활성 탭 표시</p>
+                  </li>
+                  <li>
+                    <strong>아이콘 언더라인형 (Underline)</strong>
+                    <p className="text-sm text-gray-600">아이콘과 텍스트 결합, 하단에 언더라인 인디케이터 표시</p>
+                  </li>
+                  <li>
+                    <strong>스크롤형 (Scrollable)</strong>
+                    <p className="text-sm text-gray-600">많은 탭이 있을 때 가로로 스크롤 가능한 형식</p>
+                  </li>
+                  <li>
+                    <strong>필 탭형 (Pills)</strong>
+                    <p className="text-sm text-gray-600">둥근 모서리 형태로 전체 배경 강조되는 형식</p>
+                  </li>
+                  <li>
+                    <strong>머티리얼형 (Material)</strong>
+                    <p className="text-sm text-gray-600">애니메이션 인디케이터가 탭 이동 시 부드럽게 전환</p>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="p-4 bg-slate-50 rounded-md">
+                <h3 className="text-lg font-medium mb-2">사용 사례</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>카테고리별 콘텐츠 분류 (뉴스, 스포츠, 엔터테인먼트 등)</li>
+                  <li>설정 화면의 섹션 구분 (일반, 계정, 알림 등)</li>
+                  <li>제품 상세 페이지의 정보 구분 (상세정보, 리뷰, 문의 등)</li>
+                  <li>소셜 미디어 앱의 타임라인 분류 (팔로잉, 인기, 추천 등)</li>
+                  <li>다양한 뷰 모드 전환 (목록형, 갤러리형, 지도형 등)</li>
+                </ul>
+                
+                <h3 className="text-lg font-medium mt-4 mb-2">접근성 고려사항</h3>
+                <ul className="list-disc pl-6 space-y-1 text-sm text-gray-600">
+                  <li>충분한 색상 대비로 가독성 확보</li>
+                  <li>적절한 터치 영역 크기 (최소 48x48dp)</li>
+                  <li>현재 선택된 탭을 명확히 표시</li>
+                  <li>스크린 리더 지원 (ARIA 속성 적용)</li>
+                  <li>키보드 접근성 지원</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="p-4 border border-[#268052]/20 bg-[#268052]/5 rounded-md">
+              <h3 className="text-lg font-medium mb-2 text-[#268052]">디자인 권장사항</h3>
+              <ul className="list-disc pl-6 space-y-1 text-gray-700">
+                <li>일관된 디자인 언어 유지 (앱 전체 스타일과 통일)</li>
+                <li>한 번에 볼 수 있는 적절한 탭 수 유지 (4-6개 권장)</li>
+                <li>명확한 레이블 사용 (짧고 직관적인 단어 선택)</li>
+                <li>아이콘과 텍스트 조합으로 이해도 향상</li>
+                <li>적절한 여백과 간격으로 가독성 확보</li>
+                <li>탭 간 전환 시 부드러운 애니메이션 적용</li>
+                <li>스와이프 제스처 지원 고려 (탭 간 좌우 스와이프)</li>
+              </ul>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="code" className="mt-4">
+            <div className="bg-gray-800 p-4 rounded-lg text-white">
+              <PrismCode
+                code={getDartCode()}
+                language="dart"
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="demo" className="mt-4">
+            <div className="flex flex-wrap gap-2 mb-4">
+              <button 
+                className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'basic' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                onClick={() => setTabBarStyle('basic')}
+              >
+                기본형
+              </button>
+              <button 
+                className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'underline' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                onClick={() => setTabBarStyle('underline')}
+              >
+                아이콘 언더라인형
+              </button>
+              <button 
+                className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'scrollable' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                onClick={() => setTabBarStyle('scrollable')}
+              >
+                스크롤형
+              </button>
+              <button 
+                className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'pills' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                onClick={() => setTabBarStyle('pills')}
+              >
+                필 탭형
+              </button>
+              <button 
+                className={`px-3 py-1 text-sm rounded-full ${tabBarStyle === 'material' ? 'bg-[#268052] text-white' : 'bg-gray-100'}`}
+                onClick={() => setTabBarStyle('material')}
+              >
+                머티리얼형
+              </button>
+            </div>
+            
+            <div className="border rounded-md shadow-sm overflow-hidden">
+              <div className="p-4 flex justify-center">
+                <div className="w-full max-w-md">
+                  {renderTabBar()}
+                  <div className="p-8 text-center text-gray-500">
+                    {activeTab} 콘텐츠
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="mt-6">
-            <h3 className="text-lg font-medium mb-2">Dart / Flutter 코드</h3>
-            <PrismCode
-              code={getDartCode()}
-              language="dart"
-            />
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </SlideLayout>
   )

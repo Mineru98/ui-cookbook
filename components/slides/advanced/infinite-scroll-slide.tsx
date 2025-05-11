@@ -234,8 +234,7 @@ export default function InfiniteScrollSlide() {
           </ul>
         </div>
 
-        <div className="p-4 border rounded-md mt-6">
-          <h3 className="text-lg font-medium mb-3">Flutter 구현 코드 예시</h3>
+        <div className="border rounded-md mt-6 bg-gray-800 p-4 rounded-lg">
           <PrismCode
             language="dart"
             code={`import 'package:flutter/material.dart';
